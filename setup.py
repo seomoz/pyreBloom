@@ -1,7 +1,7 @@
 from distutils.core import setup
 from distutils.extension import Extension
 
-ext_files = ["pyreBloom/pyreBloom.pyx"]
+ext_files = ["pyreBloom/bloom.c", "pyreBloom/pyreBloom.pyx"]
 
 kwargs = {}
 
@@ -13,7 +13,7 @@ except ImportError:
     ext_files.append("pyreBloom/pyreBloom.c")
     print "Building from C"
 
-ext_modules = [Extension("pyreBloom", ext_files)]
+ext_modules = [Extension("pyreBloom", ext_files, libraries=['hiredis'])]
 
 setup(
     name = 'pyreBloom',

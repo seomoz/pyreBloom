@@ -8,11 +8,11 @@ import pyreBloom
 class Accuracytest(unittest.TestCase):
     def setUp(self):
         self.p = pyreBloom.pyreBloom('pyreBloomTesting', 10000, 0.1)
-        self.p.redis.delete('pyreBloomTesting')
+        self.p.delete()
     
     def tearDown(self):
         self.p = pyreBloom.pyreBloom('pyreBloomTesting', 10000, 0.1)
-        self.p.redis.delete('pyreBloomTesting')
+        self.p.delete()
     
     def test_add(self):
         tests = ['hello', 'how', 'are', 'you', 'today']

@@ -1,12 +1,13 @@
 #! /usr/bin/env python
 
 import time
+import redis
 import random
 import string
 import unittest
 import pyreBloom
 
-count    = 5000
+count    = 10000
 capacity = count * 2
 error    = 0.1
 
@@ -18,7 +19,7 @@ start += time.time()
 print 'Generated random test words in %fs' % start
 
 p = pyreBloom.pyreBloom('pyreBloomTesting', capacity, error)
-p.redis.delete('pyreBloomTesting')
+p.delete()
 
 print 'Filter using %i hash functions and %i bits' % (p.hashes, p.bits)
 
@@ -27,7 +28,7 @@ p.extend(included)
 start += time.time()
 print 'Batch insert : %fs (%f words / second)' % (start, (count / start))
 
-p.redis.delete('pyreBloomTesting')
+p.delete()
 start = -time.time()
 r = [p.add(word) for word in included]
 start += time.time()
@@ -47,4 +48,19 @@ falsePositives = p.contains(outcluded)
 falseRate      = float(len(falsePositives)) / len(outcluded)
 print 'False positive rate: %f (%f expected)' % (falseRate, error)
 
-p.redis.delete('pyreBloomTesting')
+# Now, let's compare this to adding items to a set in redis
+p.delete()
+start = -time.time()
+r = redis.Redis()
+o = r.sadd('pyreBloomTesting', *included)
+start += time.time()
+print 'Redis set add  : %fs (%f words / second)' % (start, count / start)
+
+p.delete()
+start = -time.time()
+with r.pipeline() as pipe:
+    o = [pipe.sadd('pyreBloomTesting', include) for include in included]
+start += time.time()
+print 'Redis pipe sadd: %fs (%f words / second)' % (start, count / start)
+
+p.delete()
