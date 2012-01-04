@@ -40,7 +40,7 @@ start += time.time()
 print 'Batch test   : %fs (%f words / second)' % (start, count / start)
 
 start = -time.time()
-r = [word in p for word in included]
+r = [(word in p) for word in included]
 start += time.time()
 print 'Serial test  : %fs (%f words / second)' % (start, count / start)
 
@@ -56,11 +56,30 @@ o = r.sadd('pyreBloomTesting', *included)
 start += time.time()
 print 'Redis set add  : %fs (%f words / second)' % (start, count / start)
 
+start = -time.time()
+with r.pipeline() as pipe:
+    o = [pipe.sismember('pyreBloomTesting', word) for word in included]
+    results = pipe.execute()
+start += time.time()
+if sum(int(i) for i in results) != len(included):
+    print 'REDIS PIPE FAILED!'
+print 'Redis pipe chk : %fs (%f words / second)' % (start, count / start)
+
 p.delete()
 start = -time.time()
 with r.pipeline() as pipe:
-    o = [pipe.sadd('pyreBloomTesting', include) for include in included]
+    o = [pipe.sadd('pyreBloomTesting', word) for word in included]
+    results = pipe.execute()
 start += time.time()
 print 'Redis pipe sadd: %fs (%f words / second)' % (start, count / start)
+
+start = -time.time()
+with r.pipeline() as pipe:
+    o = [pipe.sismember('pyreBloomTesting', word) for word in included]
+    results = pipe.execute()
+start += time.time()
+if sum(int(i) for i in results) != len(included):
+    print 'REDIS PIPE FAILED!'
+print 'Redis pipe chk : %fs (%f words / second)' % (start, count / start)
 
 p.delete()
