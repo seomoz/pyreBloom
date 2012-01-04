@@ -1,12 +1,11 @@
 import math
-import redis
 import random
 
 cimport bloom
 
 cdef class pyreBloom(object):
 	cdef bloom.pyrebloomctxt context
-	cdef object              r
+	cdef bytes               key
 	
 	property bits:
 		def __get__(self):
@@ -16,12 +15,15 @@ cdef class pyreBloom(object):
 		def __get__(self):
 			return self.context.hashes
 	
-	def __init__(self, key, capacity, error, *args, **kwargs):
-		bloom.init_pyrebloom(&self.context, key, capacity, error)
-		self.r = redis.Redis()
+	def __cinit__(self, key, capacity, error):
+		self.key = key
+		bloom.init_pyrebloom(&self.context, self.key, capacity, error)
+	
+	def __dealloc__(self):
+		bloom.free_pyrebloom(&self.context) 
 	
 	def delete(self):
-		self.r.delete(self.context.key)
+		bloom.delete(&self.context)
 	
 	def put(self, value):
 		if getattr(value, '__iter__', False):

@@ -16,13 +16,16 @@ typedef struct {
 	redisContext  * ctxt;
 } pyrebloomctxt;
 
-int init_pyrebloom(pyrebloomctxt * ctxt, const char * key, uint32_t capacity, double error);
+int init_pyrebloom(pyrebloomctxt * ctxt, unsigned char * key, uint32_t capacity, double error);
+int free_pyrebloom(pyrebloomctxt * ctxt);
 
 int add(pyrebloomctxt * ctxt, const char * data, uint32_t len);
 int add_complete(pyrebloomctxt * ctxt, uint32_t count);
 
 int check(pyrebloomctxt * ctxt, const char * data, uint32_t len);
 int check_next(pyrebloomctxt * ctxt);
+
+int delete(pyrebloomctxt * ctxt);
 
 uint32_t hash(const char * data, uint32_t len, uint32_t hash, uint32_t bits);
 

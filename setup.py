@@ -1,5 +1,5 @@
 from distutils.core import setup
-from distutils.extension import Extension
+from Cython.Distutils import Extension
 
 ext_files = ["pyreBloom/bloom.c", "pyreBloom/pyreBloom.pyx"]
 
@@ -13,7 +13,7 @@ except ImportError:
     ext_files.append("pyreBloom/pyreBloom.c")
     print "Building from C"
 
-ext_modules = [Extension("pyreBloom", ext_files, libraries=['hiredis'])]
+ext_modules = [Extension("pyreBloom", ext_files, libraries=['hiredis'], pyrex_gdb=True)]
 
 setup(
     name = 'pyreBloom',

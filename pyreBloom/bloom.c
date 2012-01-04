@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int init_pyrebloom(pyrebloomctxt * ctxt, const char * key, uint32_t capacity, double error) {
+int init_pyrebloom(pyrebloomctxt * ctxt, unsigned char * key, uint32_t capacity, double error) {
 	// Counter
 	uint32_t i;
 	
@@ -11,8 +11,8 @@ int init_pyrebloom(pyrebloomctxt * ctxt, const char * key, uint32_t capacity, do
 	ctxt->bits     = - (uint32_t)((log(error) * capacity) / (log(2) * log(2)));
 	ctxt->hashes   = (uint32_t)(ceil(log(2) * ctxt->bits / capacity));
 	ctxt->error    = error;
-	ctxt->key = (unsigned char *)(malloc(strlen(key)));
-	strcpy(ctxt->key, key);
+	ctxt->key      = key;//(unsigned char *)(malloc(strlen(key)));
+	//strcpy(ctxt->key, key);
 	ctxt->seeds    = (uint32_t *)(malloc(ctxt->hashes * sizeof(uint32_t)));
 	// Generate all the seeds
 	for (i = 0; i < ctxt->hashes; ++i) {
@@ -27,6 +27,12 @@ int init_pyrebloom(pyrebloomctxt * ctxt, const char * key, uint32_t capacity, do
 		return 0;
 	}
 	return 1;
+}
+
+int free_pyrebloom(pyrebloomctxt * ctxt) {
+	if (ctxt->seeds) {
+		free(ctxt->seeds);
+	}
 }
 
 int add(pyrebloomctxt * ctxt, const char * data, uint32_t len) {
@@ -66,6 +72,13 @@ int check_next(pyrebloomctxt * ctxt) {
 		freeReplyObject(reply);
 	}
 	return result;
+}
+
+int delete(pyrebloomctxt * ctxt) {
+	redisReply * reply;
+	reply = redisCommand(ctxt->ctxt, "DEL %s", ctxt->key);
+	freeReplyObject(reply);
+	return 1;
 }
 
 // Taken from the discussion at http://www.azillionmonkeys.com/qed/hash.html
