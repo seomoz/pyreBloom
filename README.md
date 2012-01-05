@@ -50,7 +50,7 @@ The Story
 We needed to keep track of sets of urls that we had seen when crawling web
 pages, and had previously been keeping track of them in redis sets. Redis 
 sets are, after all, extremely fast. As you can see in the benchmarks, set
-insertions can handle about 500k 20-character insertions per second. _That_
+insertions can handle about 50k 20-character insertions per second. _That_
 is performant.
 
 However, these sets of urls got to be prohibitively large. But, since we 
