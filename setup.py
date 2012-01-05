@@ -1,19 +1,21 @@
 from distutils.core import setup
-from Cython.Distutils import Extension
 
-ext_files = ["pyreBloom/bloom.c", "pyreBloom/pyreBloom.pyx"]
+ext_files = ["pyreBloom/bloom.c"]
 
 kwargs = {}
 
 try:
     from Cython.Distutils import build_ext
+    from Cython.Distutils import Extension
     print "Building from Cython"
+    ext_files.append("pyreBloom/pyreBloom.pyx")
     kwargs['cmdclass'] = {'build_ext': build_ext}
 except ImportError:
+    from distutils import Extension
     ext_files.append("pyreBloom/pyreBloom.c")
     print "Building from C"
 
-ext_modules = [Extension("pyreBloom", ext_files, libraries=['hiredis'], pyrex_gdb=True)]
+ext_modules = [Extension("pyreBloom", ext_files, libraries=['hiredis'])]
 
 setup(
     name = 'pyreBloom',
