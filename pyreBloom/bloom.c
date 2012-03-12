@@ -25,7 +25,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int init_pyrebloom(pyrebloomctxt * ctxt, unsigned char * key, uint32_t capacity, double error) {
+int init_pyrebloom(pyrebloomctxt * ctxt, unsigned char * key, uint32_t capacity, double error, char* host, uint32_t port) {
 	// Counter
 	uint32_t i;
 	
@@ -43,7 +43,7 @@ int init_pyrebloom(pyrebloomctxt * ctxt, unsigned char * key, uint32_t capacity,
 	
 	// Now for the redis context
 	struct timeval timeout = { 1, 500000 };
-	ctxt->ctxt     = redisConnectWithTimeout((char*)"127.0.0.1", 6379, timeout);
+	ctxt->ctxt     = redisConnectWithTimeout(host, port, timeout);
 	if (ctxt->ctxt->err) {
 		// Some kind of error
 		return 0;

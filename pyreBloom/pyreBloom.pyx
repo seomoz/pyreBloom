@@ -36,9 +36,9 @@ cdef class pyreBloom(object):
 		def __get__(self):
 			return self.context.hashes
 	
-	def __cinit__(self, key, capacity, error):
+	def __cinit__(self, key, capacity, error, host='127.0.0.1', port=6379):
 		self.key = key
-		bloom.init_pyrebloom(&self.context, self.key, capacity, error)
+		bloom.init_pyrebloom(&self.context, self.key, capacity, error, host, port)
 	
 	def __dealloc__(self):
 		bloom.free_pyrebloom(&self.context) 

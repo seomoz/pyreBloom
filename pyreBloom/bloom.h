@@ -38,7 +38,7 @@ typedef struct {
 	redisContext  * ctxt;
 } pyrebloomctxt;
 
-int init_pyrebloom(pyrebloomctxt * ctxt, unsigned char * key, uint32_t capacity, double error);
+int init_pyrebloom(pyrebloomctxt * ctxt, unsigned char * key, uint32_t capacity, double error, char* host, uint32_t port);
 int free_pyrebloom(pyrebloomctxt * ctxt);
 
 int add(pyrebloomctxt * ctxt, const char * data, uint32_t len);

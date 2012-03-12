@@ -32,7 +32,7 @@ cdef extern from "bloom.h":
 		unsigned char * key
 		redisContext * ctxt
 
-	bint init_pyrebloom(pyrebloomctxt * ctxt, unsigned char * key, uint32_t capacity, float error)
+	bint init_pyrebloom(pyrebloomctxt * ctxt, unsigned char * key, uint32_t capacity, float error, char* host, uint32_t port)
 	bint free_pyrebloom(pyrebloomctxt * ctxt)
 	
 	bint add(pyrebloomctxt * ctxt, char * data, uint32_t len)

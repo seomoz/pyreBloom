@@ -44,7 +44,6 @@ class Accuracytest(unittest.TestCase):
         
         falsePositives = self.p.contains(outcluded)
         falseRate      = float(len(falsePositives)) / len(outcluded)
-        print 'False positive rate: %f' % falseRate
         self.assertTrue(falseRate < 0.1, 'False positive error rate exceeded!')
 
 if __name__ == '__main__':
