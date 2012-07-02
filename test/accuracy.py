@@ -45,6 +45,17 @@ class Accuracytest(unittest.TestCase):
         falsePositives = self.p.contains(outcluded)
         falseRate      = float(len(falsePositives)) / len(outcluded)
         self.assertTrue(falseRate < 0.1, 'False positive error rate exceeded!')
+    
+    def test_two_instances(self):
+        p2 = pyreBloom.pyreBloom('pyreBloomTesting', 10000, 0.1)
+        tests = ['hello', 'how', 'are', 'you', 'today']
+        
+        # Add them through the first instance
+        self.p.extend(tests)
+        self.assertEqual(tests, self.p.contains(tests))
+        
+        # Make sure they're accessible through the second instance
+        self.assertEqual(tests, p2.contains(tests))
 
 if __name__ == '__main__':
     unittest.main()

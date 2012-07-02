@@ -37,6 +37,7 @@ int init_pyrebloom(pyrebloomctxt * ctxt, unsigned char * key, uint32_t capacity,
 	//strcpy(ctxt->key, key);
 	ctxt->seeds    = (uint32_t *)(malloc(ctxt->hashes * sizeof(uint32_t)));
 	// Generate all the seeds
+	srand(1);
 	for (i = 0; i < ctxt->hashes; ++i) {
 		ctxt->seeds[i] = (uint32_t)(rand());
 	}
@@ -60,7 +61,8 @@ int free_pyrebloom(pyrebloomctxt * ctxt) {
 int add(pyrebloomctxt * ctxt, const char * data, uint32_t len) {
 	uint32_t i;
 	for (i = 0; i < ctxt->hashes; ++i) {
-		redisAppendCommand(ctxt->ctxt, "SETBIT %s %d 1", ctxt->key, hash(data, len, ctxt->seeds[i], ctxt->bits));
+    	uint32_t d = hash(data, len, ctxt->seeds[i], ctxt->bits);
+		redisAppendCommand(ctxt->ctxt, "SETBIT %s %d 1", ctxt->key, d);
 	}
 	return 1;
 }
