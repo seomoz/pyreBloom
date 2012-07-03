@@ -56,6 +56,7 @@ int free_pyrebloom(pyrebloomctxt * ctxt) {
 	if (ctxt->seeds) {
 		free(ctxt->seeds);
 	}
+	redisFree(ctxt->ctxt);
 }
 
 int add(pyrebloomctxt * ctxt, const char * data, uint32_t len) {
