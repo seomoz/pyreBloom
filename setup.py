@@ -11,7 +11,7 @@ try:
     ext_files.append("pyreBloom/pyreBloom.pyx")
     kwargs['cmdclass'] = {'build_ext': build_ext}
 except ImportError:
-    from distutils import Extension
+    from distutils.core import Extension
     ext_files.append("pyreBloom/pyreBloom.c")
     print "Building from C"
 
