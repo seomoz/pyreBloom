@@ -24,6 +24,12 @@ import random
 
 cimport bloom
 
+
+class pyreBloomException(Exception):
+	'''Some sort of exception has happened internally'''
+	pass
+
+
 cdef class pyreBloom(object):
 	cdef bloom.pyrebloomctxt context
 	cdef bytes               key
@@ -38,7 +44,9 @@ cdef class pyreBloom(object):
 	
 	def __cinit__(self, key, capacity, error, host='127.0.0.1', port=6379):
 		self.key = key
-		bloom.init_pyrebloom(&self.context, self.key, capacity, error, host, port)
+		if bloom.init_pyrebloom(&self.context, self.key, capacity,
+			error, host, port):
+			raise pyreBloomException(self.context.ctxt.errstr)
 	
 	def __dealloc__(self):
 		bloom.free_pyrebloom(&self.context) 
