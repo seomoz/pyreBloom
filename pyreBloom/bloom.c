@@ -36,10 +36,25 @@ int init_pyrebloom(pyrebloomctxt * ctxt, unsigned char * key, uint32_t capacity,
 	ctxt->key      = key;//(unsigned char *)(malloc(strlen(key)));
 	//strcpy(ctxt->key, key);
 	ctxt->seeds    = (uint32_t *)(malloc(ctxt->hashes * sizeof(uint32_t)));
-	// Generate all the seeds
-	srand(1);
+
+	/* The implementation here used to rely on srand(1) and then repeated
+	 * calls to rand(), but I no longer trust that to provide correct behavior
+	 * when working between different platforms. As such, We'll be using a LCG
+	 *
+	 *     http://en.wikipedia.org/wiki/Linear_congruential_generator
+	 *
+	 * Hopefully this will be the last of interoperability issues. Note that
+	 * updating to this version will unfortunately require rebuilding old
+	 * bloom filters.
+	 *
+	 * Our m is implicitly going to be 2^32 by storing the result into a
+	 * uint32_t */
+	uint32_t a = 1664525;
+	uint32_t c = 1013904223;
+	uint32_t x = 314159265;
 	for (i = 0; i < ctxt->hashes; ++i) {
-		ctxt->seeds[i] = (uint32_t)(rand());
+		ctxt->seeds[i] = x;
+		x = a * x + c;
 	}
 	
 	// Now for the redis context
