@@ -5,6 +5,16 @@ One of Salvatore's suggestions for Redis' GETBIT and SETBIT commands is to
 implement bloom filters. There was an existing python project that we used
 for inspiration.
 
+Notice
+======
+__Important__ -- The most recent version uses different seed values from all
+previous releases. Previous releases were using `srand` and `rand`, though they
+are not guaranteed to yield the same values on different systems. For example,
+two clients compiled on different platforms with different C implementations
+may not necessarily agree on what's in the filters. This latest version fixes
+this, but will also be incompatible with filters constructed with any previous
+versions.
+
 Installation
 ============
 
