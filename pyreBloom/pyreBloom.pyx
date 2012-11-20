@@ -42,10 +42,11 @@ cdef class pyreBloom(object):
 		def __get__(self):
 			return self.context.hashes
 	
-	def __cinit__(self, key, capacity, error, host='127.0.0.1', port=6379):
+	def __cinit__(self, key, capacity, error, host='127.0.0.1', port=6379,
+		password=''):
 		self.key = key
 		if bloom.init_pyrebloom(&self.context, self.key, capacity,
-			error, host, port):
+			error, host, port, password):
 			raise pyreBloomException(self.context.ctxt.errstr)
 	
 	def __dealloc__(self):
@@ -57,25 +58,34 @@ cdef class pyreBloom(object):
 	def put(self, value):
 		if getattr(value, '__iter__', False):
 			r = [bloom.add(&self.context, v, len(v)) for v in value]
-			bloom.add_complete(&self.context, len(value))
+			r = bloom.add_complete(&self.context, len(value))
 		else:
 			bloom.add(&self.context, value, len(value))
-			bloom.add_complete(&self.context, 1)
+			r = bloom.add_complete(&self.context, 1)
+		if r < 0:
+			raise pyreBloomException(self.context.ctxt.errstr)
+		return r
 	
 	def add(self, value):
-		self.put(value)
+		return self.put(value)
 	
 	def extend(self, values):
-		self.put(values)
+		return self.put(values)
 	
 	def contains(self, value):
 		# If the object is 'iterable'...
 		if getattr(value, '__iter__', False):
 			r = [bloom.check(&self.context, v, len(v)) for v in value]
-			return [v for v in value if bloom.check_next(&self.context)]
+			r = [bloom.check_next(&self.context) for i in range(len(value))]
+			if (min(r) < 0):
+				raise pyreBloomException(self.context.ctxt.errstr)
+			return [v for v, included in zip(value, r) if included]
 		else:
 			bloom.check(&self.context, value, len(value))
-			return bool(bloom.check_next(&self.context))
+			r = bloom.check_next(&self.context)
+			if (r < 0):
+				raise pyreBloomException(self.context.ctxt.errstr)
+			return bool(r)
 	
 	def __contains__(self, value):
 		return self.contains(value)

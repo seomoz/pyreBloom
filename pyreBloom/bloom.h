@@ -35,11 +35,12 @@ typedef struct {
 	double          error;
 	uint32_t      * seeds;
 	char          * key;
+    char          * password;
 	redisContext  * ctxt;
     char         ** keys;
 } pyrebloomctxt;
 
-int init_pyrebloom(pyrebloomctxt * ctxt, char * key, uint32_t capacity, double error, char* host, uint32_t port);
+int init_pyrebloom(pyrebloomctxt * ctxt, char * key, uint32_t capacity, double error, char* host, uint32_t port, char* password);
 int free_pyrebloom(pyrebloomctxt * ctxt);
 
 int add(pyrebloomctxt * ctxt, const char * data, uint32_t len);
