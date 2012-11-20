@@ -30,13 +30,14 @@ cdef extern from "bloom.h":
         char *obuf
     
     ctypedef struct pyrebloomctxt:
-        uint32_t capacity
-        uint32_t bits
-        uint32_t hashes
-        float    error
-        uint32_t * seeds
-        unsigned char * key
-        redisContext * ctxt
+        uint32_t        capacity
+        uint32_t        hashes
+        uint64_t        bits
+        double          error
+        uint32_t      * seeds
+        char          * key
+        redisContext  * ctxt
+        char         ** keys
 
     bint init_pyrebloom(pyrebloomctxt * ctxt, unsigned char * key, uint32_t capacity, float error, char* host, uint32_t port)
     bint free_pyrebloom(pyrebloomctxt * ctxt)
@@ -49,4 +50,4 @@ cdef extern from "bloom.h":
     
     bint delete(pyrebloomctxt * ctxt)
     
-    uint32_t hash(unsigned char * data, uint32_t len, uint32_t hash, uint32_t bits)
+    uint64_t hash(unsigned char * data, uint32_t len, uint64_t hash, uint64_t bits)
