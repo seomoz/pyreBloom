@@ -99,6 +99,8 @@ int init_pyrebloom(pyrebloomctxt * ctxt, char * key, uint32_t capacity, double e
 			freeReplyObject(reply);
 			return 1;
 		}
+		/* And now, finally free this reply object */
+		freeReplyObject(reply);
 	}
 	return 0;
 }
