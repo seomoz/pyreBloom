@@ -24,6 +24,25 @@ With those things installed, it's pretty simple:
 
 	sudo python setup.py install
 
+Hiredis
+-------
+In order to install `hiredis`, you can:
+
+```bash
+# From https://github.com/paulasmuth/recommendify/issues/6#issuecomment-4496616
+# via https://github.com/seomoz/pyreBloom/issues/7#issuecomment-21182063
+#
+# On Mac:
+brew install hiredis
+
+# With Ubuntu:
+apt-get install libhiredis-dev
+
+# From source:
+git clone https://github.com/redis/hiredis
+cd hiredis && make && sudo make install
+```
+
 Usage
 =====
 
