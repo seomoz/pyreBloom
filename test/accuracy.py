@@ -45,6 +45,10 @@ class FunctionalityTest(unittest.TestCase):
         self.assertLess(
             false_rate, 0.00001, 'False positive error rate exceeded!')
 
+        # We also need to know that we can access all the keys we need
+        self.assertEqual(self.bloom.keys(),
+            ['pyreBloomTesting.0', 'pyreBloomTesting.1'])
+
     def test_delete(self):
         '''Make sure that when we delete the bloom filter, we really do'''
         samples = sample_strings(20, 5000)

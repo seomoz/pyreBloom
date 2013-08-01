@@ -33,6 +33,7 @@ cdef extern from "bloom.h":
     ctypedef struct pyrebloomctxt:
         uint32_t        capacity
         uint32_t        hashes
+        uint32_t        num_keys
         uint64_t        bits
         double          error
         uint32_t      * seeds

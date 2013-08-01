@@ -42,10 +42,10 @@ int init_pyrebloom(pyrebloomctxt * ctxt, char * key, uint32_t capacity, double e
 	strncpy(ctxt->password, password, strlen(password));
 
 	/* We'll need a certain number of strings here */
-	uint32_t num_keys = (uint32_t)(
+	ctxt->num_keys = (uint32_t)(
 		ceil((float)(ctxt->bits) / max_bits_per_key));
-	ctxt->keys = (char**)(malloc(num_keys * sizeof(char*)));
-	for (i = 0; i < num_keys; ++i) {
+	ctxt->keys = (char**)(malloc(ctxt->num_keys * sizeof(char*)));
+	for (i = 0; i < ctxt->num_keys; ++i) {
 		ctxt->keys[i] = (char*)(malloc(strlen(key) + 10));
 		sprintf(ctxt->keys[i], "%s.%i", key, i);
 	}

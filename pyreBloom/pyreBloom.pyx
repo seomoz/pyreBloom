@@ -89,3 +89,7 @@ cdef class pyreBloom(object):
 	
 	def __contains__(self, value):
 		return self.contains(value)
+
+	def keys(self):
+		'''Return a list of the keys used in this bloom filter'''
+		return [self.context.keys[i] for i in range(self.context.num_keys)]
