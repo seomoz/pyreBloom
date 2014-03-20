@@ -31,7 +31,7 @@ int main(int argc, char ** argv) {
     time_t start, end;
     uint32_t count = 100000;
 
-    init_pyrebloom(&ctxt, "testing", count, 0.1);
+    init_pyrebloom(&ctxt, "testing", count, 0.1, "localhost", 6379, "");
 
     time(&start);
     for (i = 0; i < count; ++i) {
