@@ -24,7 +24,7 @@ optionally have `Cython` installed, which will generate the C extension code.
 With those things installed, it's pretty simple:
 
 ```bash
-pip install -r requirements
+pip install -r requirements.txt
 python setup.py install
 ```
 
@@ -59,7 +59,7 @@ key name, a capacity, and an error rate:
 import pyreBloom
 p = pyreBloom.pyreBloom('myBloomFilter', 100000, 0.01)
 # You can find out how many bits this will theoretically consume
-p.bytes
+p.bits
 # And how many hashes are needed to satisfy the false positive rate
 p.hashes
 ```
