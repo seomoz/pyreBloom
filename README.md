@@ -24,7 +24,7 @@ optionally have `Cython` installed, which will generate the C extension code.
 With those things installed, it's pretty simple:
 
 ```bash
-pip install -r requirements
+pip install -r requirements.txt
 python setup.py install
 ```
 
