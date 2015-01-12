@@ -13,6 +13,6 @@ clean:
 	find . -name '*.so' | xargs rm
 
 .PHONY: test
-test: install
+test:
 	rm -f .coverage
 	nosetests --exe -v
