@@ -8,6 +8,7 @@ sudo apt-get install -y libhiredis-dev python-pip python-dev
     cd /vagrant/provision
     sudo cp etc/redis.conf /etc/redis.conf
     sudo cp etc/init/redis.conf /etc/init/redis.conf
+    sudo cp etc/sysctl.d/99-overcommit.conf /etc/sysctl.d/99-overcommit.conf
 )
 
 # Install redis server
