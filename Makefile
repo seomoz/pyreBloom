@@ -7,10 +7,10 @@ install:
 clean:
 	# Remove the build
 	sudo rm -rf build dist
-	find . -name '*.pyc' | xargs -n 100 rm
-	find . -name .coverage | xargs rm
-	find . -name '*.o' | xargs rm
-	find . -name '*.so' | xargs rm
+	find . -name '*.pyc' | xargs -n 100 rm -f
+	find . -name .coverage | xargs rm -f
+	find . -name '*.o' | xargs rm -f
+	find . -name '*.so' | xargs rm -f
 
 .PHONY: test
 test:
