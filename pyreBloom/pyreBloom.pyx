@@ -46,7 +46,7 @@ cdef class pyreBloom(object):
 		password='', db=0):
 		self.key = key
 		if bloom.init_pyrebloom(&self.context, self.key, capacity,
-			error, host, port, password):
+			error, host, port, password, db):
 			raise pyreBloomException(self.context.ctxt.errstr)
 	
 	def __dealloc__(self):

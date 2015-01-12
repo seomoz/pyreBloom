@@ -33,7 +33,7 @@ const size_t errstr_size = 128;
 
 int init_pyrebloom(
     pyrebloomctxt * ctxt, char * key, uint32_t capacity, double error,
-    char* host, uint32_t port, char* password) {
+    char* host, uint32_t port, char* password, uint32_t db) {
     // Counter
     uint32_t i;
 
@@ -109,6 +109,20 @@ int init_pyrebloom(
         /* And now, finally free this reply object */
         freeReplyObject(reply);
     }
+
+    /* Select the appropriate DB */
+    redisReply * reply = NULL;
+    reply = redisCommand(ctxt->ctxt, "SELECT %i", db);
+    if (reply->type == REDIS_REPLY_ERROR) {
+        strncpy(ctxt->ctxt->errstr, reply->str, errstr_size);
+        freeReplyObject(reply);
+        /* Shut it down. */
+        free_pyrebloom(ctxt);
+        return PYREBLOOM_ERROR;
+    }
+    freeReplyObject(reply);
+
+    /* If we've made it this far, we're ok. */
     return PYREBLOOM_OK;
 }
 

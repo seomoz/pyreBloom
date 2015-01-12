@@ -44,7 +44,7 @@ cdef extern from "bloom.h":
 
     bint init_pyrebloom(pyrebloomctxt * ctxt, unsigned char * key,
         uint32_t capacity, float error, char* host, uint32_t port,
-        char* password)
+        char* password, uint32_t db)
     bint free_pyrebloom(pyrebloomctxt * ctxt)
     
     bint add(pyrebloomctxt * ctxt, char * data, uint32_t len)
