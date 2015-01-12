@@ -95,6 +95,18 @@ class FunctionalityTest(BaseTest):
         self.assertEqual(tests, bloom.contains(tests))
 
 
+class DbTest(BaseTest):
+    '''Make sure we can select a database'''
+    def test_select_db(self):
+        '''Can instantiate a bloom filter in a separate db'''
+        bloom = pyreBloom.pyreBloom(self.KEY, self.CAPACITY, self.ERROR_RATE, db=1)
+
+        # After adding key to our db=0 bloom filter, shouldn't see it in our db=0 bloom
+        samples = sample_strings(20, 100)
+        self.bloom.extend(samples)
+        self.assertEqual(len(bloom.contains(samples)), 0)
+
+
 class AllocationTest(BaseTest):
     '''Tests about large allocations'''
     CAPACITY = 200000000

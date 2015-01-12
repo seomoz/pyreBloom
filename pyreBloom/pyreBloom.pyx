@@ -43,7 +43,7 @@ cdef class pyreBloom(object):
 			return self.context.hashes
 	
 	def __cinit__(self, key, capacity, error, host='127.0.0.1', port=6379,
-		password=''):
+		password='', db=0):
 		self.key = key
 		if bloom.init_pyrebloom(&self.context, self.key, capacity,
 			error, host, port, password):
