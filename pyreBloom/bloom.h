@@ -27,6 +27,12 @@
 #include <stdlib.h>
 #include <hiredis/hiredis.h>
 
+/* Some return values */
+enum {
+    PYREBLOOM_OK = 0,
+    PYREBLOOM_ERROR = -1
+};
+
 // And now for some redis stuff
 typedef struct {
 	uint32_t        capacity;
@@ -41,7 +47,7 @@ typedef struct {
     char         ** keys;
 } pyrebloomctxt;
 
-int init_pyrebloom(pyrebloomctxt * ctxt, char * key, uint32_t capacity, double error, char* host, uint32_t port, char* password);
+int init_pyrebloom(pyrebloomctxt * ctxt, char * key, uint32_t capacity, double error, char* host, uint32_t port, char* password, uint32_t db);
 int free_pyrebloom(pyrebloomctxt * ctxt);
 
 int add(pyrebloomctxt * ctxt, const char * data, uint32_t len);

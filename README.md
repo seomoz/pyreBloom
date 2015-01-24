@@ -1,5 +1,6 @@
-__Py__thon + __Re__dis + __Bloom__ Filter = pyreBloom
+Python + Redis + Bloom Filter = pyreBloom
 =====================================================
+[![Build Status](https://travis-ci.org/seomoz/pyreBloom.svg?branch=linting)](https://travis-ci.org/seomoz/pyreBloom)
 
 One of Salvatore's suggestions for Redis' GETBIT and SETBIT commands is to
 implement bloom filters. There was an existing python project that we used
@@ -18,11 +19,14 @@ versions.
 Installation
 ============
 
-You will need `hiredis` installed, as well as Cython (for the time being --
-we'd like to remove this dependency soon), and a C compiler (probably GCC).
+You will need `hiredis` installed, and a C compiler (probably GCC). You can
+optionally have `Cython` installed, which will generate the C extension code.
 With those things installed, it's pretty simple:
 
-	sudo python setup.py install
+```bash
+pip install -r requirements.txt
+python setup.py install
+```
 
 Hiredis
 -------
@@ -51,27 +55,33 @@ modes are about 4-5 times faster than their serial equivalents, so use them
 when you can. When you instantiate a pyreBloom, you should give it a redis
 key name, a capacity, and an error rate:
 
-	import pyreBloom
-	p = pyreBloom.pyreBloom('myBloomFilter', 100000, 0.01)
-	# You can find out how many bits this will theoretically consume
-	p.bytes
-	# And how many hashes are needed to satisfy the false positive rate
-	p.hashes
+```python
+import pyreBloom
+p = pyreBloom.pyreBloom('myBloomFilter', 100000, 0.01)
+# You can find out how many bits this will theoretically consume
+p.bits
+# And how many hashes are needed to satisfy the false positive rate
+p.hashes
+```
 
 From that point, you can add elements quite easily:
 
-    tests = ['hello', 'how', 'are', 'you', 'today']
-    p.extend(tests)
+```python
+tests = ['hello', 'how', 'are', 'you', 'today']
+p.extend(tests)
+```
 
 The batch mode of `contains` differs from the serial version in that it actually
 returns which elements are in the bloom filter:
 
-	p.contains('hello')
-	# True
-	p.contains(['hello', 'whats', 'new', 'with', 'you'])
-	# ['hello', 'you']
-	'hello' in p
-	# True
+```python
+p.contains('hello')
+# True
+p.contains(['hello', 'whats', 'new', 'with', 'you'])
+# ['hello', 'you']
+'hello' in p
+# True
+```
 
 The Story
 =========

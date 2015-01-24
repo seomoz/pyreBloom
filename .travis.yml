@@ -1,0 +1,10 @@
+language: python
+services:
+    - redis-server
+python:
+    - '2.7'
+install:
+    - 'sudo apt-get install libhiredis-dev'
+    - 'pip install -r requirements.txt'
+    - 'make install'
+script: make test
