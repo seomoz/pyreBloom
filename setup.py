@@ -15,7 +15,9 @@ except ImportError:
     ext_files.append("pyreBloom/pyreBloom.c")
     print "Building from C"
 
-ext_modules = [Extension("pyreBloom", ext_files, libraries=['hiredis'])]
+ext_modules = [Extension("pyreBloom", ext_files, libraries=['hiredis'],
+                         library_dirs=['/usr/local/lib'],
+                         include_dirs=['/usr/local/include'])]
 
 setup(
     name = 'pyreBloom',
