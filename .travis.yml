@@ -3,6 +3,8 @@ services:
     - redis-server
 python:
     - '2.7'
+    - '3.3'
+    - '3.4'
 install:
     - 'sudo apt-get install libhiredis-dev'
     - 'pip install -r requirements.txt'
