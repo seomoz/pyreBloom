@@ -1,6 +1,11 @@
 Python + Redis + Bloom Filter = pyreBloom
 =====================================================
 [![Build Status](https://travis-ci.org/seomoz/pyreBloom.svg)](https://travis-ci.org/seomoz/pyreBloom)
+![Status: Production](https://img.shields.io/badge/status-production-green.svg?style=flat)
+![Team: Big Data](https://img.shields.io/badge/team-big_data-green.svg?style=flat)
+![Scope: External](https://img.shields.io/badge/scope-external-green.svg?style=flat)
+![Open Source: MIT](https://img.shields.io/badge/open_source-MIT-green.svg?style=flat)
+![Critical: Yes](https://img.shields.io/badge/critical-yes-red.svg?style=flat)
 
 One of Salvatore's suggestions for Redis' GETBIT and SETBIT commands is to
 implement bloom filters. There was an existing python project that we used
