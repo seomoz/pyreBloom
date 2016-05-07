@@ -7,13 +7,13 @@ kwargs = {}
 try:
     from Cython.Distutils import build_ext
     from Cython.Distutils import Extension
-    print 'Building from Cython'
+    print('Building from Cython')
     ext_files.append('pyreBloom/pyreBloom.pyx')
     kwargs['cmdclass'] = {'build_ext': build_ext}
 except ImportError:
     from distutils.core import Extension
     ext_files.append('pyreBloom/pyreBloom.c')
-    print 'Building from C'
+    print('Building from C')
 
 ext_modules = [Extension("pyreBloom", ext_files, libraries=['hiredis'],
                          library_dirs=['/usr/local/lib'],
